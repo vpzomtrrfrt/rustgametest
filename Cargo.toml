@@ -1,0 +1,6 @@
+[package]
+name = "rustgametest"
+version = "0.1.0"
+authors = ["vpzom"]
+
+[dependencies]
