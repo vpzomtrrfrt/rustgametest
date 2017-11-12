@@ -1,11 +1,11 @@
-extern crate glutin_window;
 extern crate graphics;
 extern crate opengl_graphics;
 extern crate piston;
+extern crate sdl2_window;
 
 use piston::input::{RenderEvent, UpdateEvent};
 use piston::input::controller::ControllerAxisEvent;
-use glutin_window::GlutinWindow as Window;
+use sdl2_window::Sdl2Window as Window;
 use graphics::Transformed;
 
 struct Point2D {
@@ -36,20 +36,26 @@ impl Player {
             gl,
         );
     }
-    fn update(&mut self, time: f64) {
-        self.position.x += self.rotation.cos()*time;
-        self.position.y += self.rotation.sin()*time;
-        while self.position.x > 1.2 {
-            self.position.x -= 2.4;
+    fn update(&mut self, time: f64, input: &InputState) {
+        const SPEED: f64 = 0.4;
+        const ROT_SPEED: f64 = 1.5;
+        const AFTER_PAD: f64 = 1.05;
+        if let Some(pos) = input.axes.get(&(0, 0)) {
+            self.rotation += pos * time * ROT_SPEED;
         }
-        while self.position.y > 1.2 {
-            self.position.y -= 2.4;
+        self.position.x += self.rotation.cos() * time * SPEED;
+        self.position.y += self.rotation.sin() * time * SPEED;
+        while self.position.x > AFTER_PAD {
+            self.position.x -= AFTER_PAD * 2.0;
         }
-        while self.position.x < -1.2 {
-            self.position.x += 2.4;
+        while self.position.y > AFTER_PAD {
+            self.position.y -= AFTER_PAD * 2.0;
         }
-        while self.position.y < -1.2 {
-            self.position.y += 2.4;
+        while self.position.x < -AFTER_PAD {
+            self.position.x += AFTER_PAD * 2.0;
+        }
+        while self.position.y < -AFTER_PAD {
+            self.position.y += AFTER_PAD * 2.0;
         }
     }
 }
@@ -78,7 +84,7 @@ impl App {
     }
     fn update(&mut self, time: f64) {
         for mut player in &mut self.players {
-            player.update(time);
+            player.update(time, &self.input);
         }
     }
 }
@@ -126,6 +132,11 @@ fn main() {
 
         if let Some(u) = e.update_args() {
             app.update(u.dt);
+        }
+
+        if let Some(args) = e.controller_axis_args() {
+            println!("input {} {} {}", args.axis, args.id, args.position);
+            app.input.axes.insert((args.id, args.axis), args.position);
         }
     }
 }
