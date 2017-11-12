@@ -1,13 +1,3 @@
-[root]
-name = "rustgametest"
-version = "0.1.0"
-dependencies = [
- "piston 0.35.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "piston2d-graphics 0.23.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "piston2d-opengl_graphics 0.49.0 (registry+https://github.com/rust-lang/crates.io-index)",
- "pistoncore-glutin_window 0.42.0 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
 [[package]]
 name = "adler32"
 version = "1.0.2"
@@ -654,6 +644,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "redox_syscall"
 version = "0.1.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "rustgametest"
+version = "0.1.0"
+dependencies = [
+ "piston 0.35.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "piston2d-graphics 0.23.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "piston2d-opengl_graphics 0.49.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "pistoncore-glutin_window 0.42.0 (registry+https://github.com/rust-lang/crates.io-index)",
+]
 
 [[package]]
 name = "rusttype"
